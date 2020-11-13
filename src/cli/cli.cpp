@@ -24,16 +24,21 @@ void cli::hello() {
   auto multi_tickets = new Store<MultiTicket>();
   auto reserved_tickets = new Store<TicketBase>();
 
-  single_tickets = database::load_single(AVAILABLE_SIN);
-  multi_tickets = database::load_multi(AVAILABLE_MUL, single_tickets);
+  try {
+    single_tickets = database::load_single(AVAILABLE_SIN);
+    multi_tickets = database::load_multi(AVAILABLE_MUL, single_tickets);
 
-  reserved_tickets =
-      database::load_relations(RESERVED, single_tickets, multi_tickets);
+    reserved_tickets =
+        database::load_relations(RESERVED, single_tickets, multi_tickets);
 
-  print_help();
-  action(single_tickets, multi_tickets, reserved_tickets);
+    print_help();
+    action(single_tickets, multi_tickets, reserved_tickets);
 
-  database::save_relations(RESERVED, reserved_tickets);
+    database::save_relations(RESERVED, reserved_tickets);
+  }
+  catch (StoreInternalError &e) {
+    cerr << "error " << e.what() << endl;
+  }
 
   delete single_tickets;
   delete multi_tickets;
