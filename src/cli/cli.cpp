@@ -35,8 +35,7 @@ void cli::hello() {
     action(single_tickets, multi_tickets, reserved_tickets);
 
     database::save_relations(RESERVED, reserved_tickets);
-  }
-  catch (StoreInternalError &e) {
+  } catch (StoreInternalError &e) {
     cerr << "error " << e.what() << endl;
   }
 
@@ -51,16 +50,19 @@ void cli::action(database::SingleDB single, database::MultiDB multi,
   switch (prompt<char>("? What to do [+/-/l]")) {
   case '+':
     add(DATABASES);
+    return;
 
   case '-':
     remove(DATABASES);
+    return;
 
   case 'l':
     list(DATABASES);
+    return;
 
   default:
     cerr << "Wrong action. Try again. Terminated.";
-    exit(0);
+    return;
   }
 }
 
@@ -74,8 +76,6 @@ void cli::list(database::SingleDB single, database::MultiDB multi,
 
   printf("\x1b[1m\x1b[1;33m%5s\x1b[0;1m %s\x1b[0m\n", "id", "RESERVED");
   reserved->listAll();
-
-  exit(0);
 }
 
 void cli::add(database::SingleDB single, database::MultiDB multi,
@@ -127,6 +127,4 @@ void cli::remove(database::SingleDB single, database::MultiDB multi,
   cout << "\n\x1b[34m info\x1b[0m now you have following reservations:\n";
   printf("\x1b[1m\x1b[1;33m%5s\x1b[0;1m %s\x1b[0m\n", "id", "RESERVED");
   reserved->listAll();
-
-  exit(0);
 }
