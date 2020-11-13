@@ -9,10 +9,16 @@
 #include <string>
 #include <utility>
 
-#include "../../utils/types.h"
+#include "../utils/types.h"
 #include "./TicketBase.h"
 
 using namespace std;
+
+struct Travel {
+  IDType id;
+  Cost cost;
+  string from, to;
+};
 
 class SingleTicket : public TicketBase {
   string from;
@@ -32,19 +38,14 @@ public:
   string getTo() const { return this->to; }
   void setTo(std::string value) { this->to = std::move(value); }
 
-  string toString() override { return super::toString(); }
+  string toString() override {
+    return ", from `" + this->getFrom() + "' to `" + this->getTo() + "'" +
+           super::toString();
+  }
 
-  static TicketBase *deserialise(string &info) {
-    IDType id;
-    Cost cost;
-    string from, to;
-
-    for (int i = 0, next = 0; i < 4; i++) {
-      next += info.find(';');
-      cout << info.substr(0, next);
-    }
-
-    return nullptr;
+  string serialize() override {
+    return ";" + to_string(this->getId()) + ";" + to_string(this->getCost()) +
+           ";" + this->from + ";" + this->to + ";\n";
   }
 };
 

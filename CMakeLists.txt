@@ -3,4 +3,4 @@ project(ticketeer)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(ticketeer src/main.cpp src/lib/tickets/TicketBase.cpp src/lib/tickets/TicketBase.h src/lib/tickets/PlaneTicket.cpp src/lib/tickets/PlaneTicket.h src/lib/tickets/NavalTicket.cpp src/lib/tickets/NavalTicket.h src/lib/tickets/MultiTicket.cpp src/lib/tickets/MultiTicket.h src/lib/tickets/TicketBase.cpp src/lib/tickets/TicketBase.h src/lib/DataBase.h src/utils/globals.h src/cli/cli.cpp src/cli/cli.h src/lib/tickets/SingleTicket.cpp src/lib/tickets/SingleTicket.h src/utils/types.h)
+add_executable(ticketeer src/main.cpp src/lib/TicketBase.cpp src/lib/TicketBase.h src/lib/PlaneTicket.cpp src/lib/PlaneTicket.h src/lib/NavalTicket.cpp src/lib/NavalTicket.h src/lib/MultiTicket.cpp src/lib/MultiTicket.h src/lib/TicketBase.cpp src/lib/TicketBase.h src/lib/DataBase.h src/cli/cli.cpp src/cli/cli.h src/lib/SingleTicket.cpp src/lib/SingleTicket.h src/utils/types.h src/utils/db.h src/utils/db.cpp src/utils/DBInternalError.cpp src/utils/DBInternalError.h)

@@ -5,7 +5,7 @@
 #ifndef NATIONALCPP_TICKETBASE_H
 #define NATIONALCPP_TICKETBASE_H
 
-#include "../../utils/types.h"
+#include "../utils/types.h"
 #include <string>
 #include <utility>
 
@@ -29,6 +29,9 @@ public:
   string getPrintableCost(string &CURRENCY) const;
 
   virtual string toString();
+  virtual string serialize() {
+    return to_string(this->id) + ";" + to_string(this->cost) + ";";
+  }
 };
 
 #endif // NATIONALCPP_TICKETBASE_H

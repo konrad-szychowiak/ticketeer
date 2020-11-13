@@ -1,15 +1,13 @@
 #include "./cli/cli.h"
 #include "./lib/DataBase.h"
-#include "./lib/tickets/MultiTicket.h"
-#include "./lib/tickets/PlaneTicket.h"
+#include "lib/MultiTicket.h"
+#include "lib/PlaneTicket.h"
+
+#include <iostream>
 
 using namespace cli;
 
 int main(int argc, char **argv) {
-  auto available = new DataBase<TicketBase>();
-  auto reserved = new DataBase<TicketBase>();
-
-  cli::hello(available, reserved);
-
+  cli::hello();
   return 0;
 }

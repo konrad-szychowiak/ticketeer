@@ -22,5 +22,5 @@ string TicketBase::getPrintableCost(string &CURRENCY) const {
   return CURRENCY + " " + PRINTABLE_COST;
 }
 string TicketBase::toString() {
-  return "#" + to_string(this->id) + " for $" + to_string(cost);
+  return ", for $" + to_string(cost);
 }
