@@ -2,16 +2,16 @@
 // Created by konrad on 13.11.2020.
 //
 
-#ifndef TICKETEER_DB_H
-#define TICKETEER_DB_H
+#ifndef TICKETEER_UTILS_H
+#define TICKETEER_UTILS_H
 
 #include "../lib/MultiTicket.h"
 #include "../lib/NavalTicket.h"
 #include "../lib/PlaneTicket.h"
 #include "../lib/TicketBase.h"
-#include "../store/Store.h"
+#include "Store.h"
 
-namespace db {
+namespace database {
 typedef Store<SingleTicket> *SingleDB;
 typedef Store<MultiTicket> *MultiDB;
 typedef Store<TicketBase> *BaseDB;
@@ -24,6 +24,6 @@ MultiDB load_multi(const char *file, SingleDB database);
 
 void save_relations(const char *file_path, BaseDB database);
 BaseDB load_relations(const char *file_path, SingleDB single, MultiDB multi);
-} // namespace db
+} // namespace database
 
-#endif // TICKETEER_DB_H
+#endif // TICKETEER_UTILS_H

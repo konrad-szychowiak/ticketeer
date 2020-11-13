@@ -5,7 +5,7 @@
 #ifndef NATIONALCPP_TICKETBASE_H
 #define NATIONALCPP_TICKETBASE_H
 
-#include "../utils/types.h"
+#include "../types/types.h"
 #include <string>
 #include <utility>
 
@@ -21,17 +21,17 @@ public:
   TicketBase() = default;
 
   // id
-  IDType getId() const;
+  [[nodiscard]] IDType getId() const;
 
   // cost
-  float getCost() const;
+  [[nodiscard]] float getCost() const;
   void setCost(float value);
-  string getPrintableCost(string &CURRENCY) const;
 
+  // serialization
   virtual string toString();
-  virtual string serialize() {
-    return to_string(this->id) + ";" + to_string(this->cost) + ";";
-  }
+  virtual string stringify();
+
+  static string getField(string &fields);
 };
 
 #endif // NATIONALCPP_TICKETBASE_H

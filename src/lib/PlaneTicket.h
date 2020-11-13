@@ -25,20 +25,9 @@ public:
 
   string toString() override;
 
-  string serialize() override;
+  string stringify() override;
 
-  static PlaneTicket *deserialize(string &data) {
-    IDType id = stoi(data.substr(0, data.find(';')));
-    data = data.substr(data.find(';') + 1);
-    Cost cost = stof(data.substr(0, data.find(';')));
-    data = data.substr(data.find(';') + 1);
-    string from = data.substr(0, data.find(';'));
-    data = data.substr(data.find(';') + 1);
-    string to = data.substr(0, data.find(';'));
-    data = data.substr(data.find(';') + 1);
-
-    return new PlaneTicket(id, cost, from, to);
-  }
+  static PlaneTicket *deserialize(string &data);
 };
 
 #endif // NATIONALCPP_PLANETICKET_H

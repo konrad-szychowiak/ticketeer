@@ -17,21 +17,8 @@ public:
   NavalTicket(IDType id, Cost cost, std::string from, std::string to);
 
   string toString() override;
-
-  string serialize() override;
-
-  static NavalTicket *deserialize(string &data) {
-    IDType id = stoi(data.substr(0, data.find(';')));
-    data = data.substr(data.find(';') + 1);
-    Cost cost = stof(data.substr(0, data.find(';')));
-    data = data.substr(data.find(';') + 1);
-    string from = data.substr(0, data.find(';'));
-    data = data.substr(data.find(';') + 1);
-    string to = data.substr(0, data.find(';'));
-    data = data.substr(data.find(';') + 1);
-
-    return new NavalTicket(id, cost, from, to);
-  }
+  string stringify() override;
+  static NavalTicket *deserialize(string &data);
 };
 
 #endif // NATIONALCPP_NAVALTICKET_H

@@ -2,15 +2,15 @@
 // Created by konrad on 13.11.2020.
 //
 
-#include "db.h"
+#include "utils.h"
 #include <fstream>
 
-SingleTicket *db::deserialize_simple(string line) {
+SingleTicket *database::deserialize_simple(string line) {
   const char line_meta = line.substr(0, 2)[0];
   return create_simple_ticket(line_meta, line.substr(2));
 }
 
-SingleTicket *db::create_simple_ticket(const char meta, string info) {
+SingleTicket *database::create_simple_ticket(const char meta, string info) {
   switch (meta) {
   case PlaneTicket::META:
     return PlaneTicket::deserialize(info);
@@ -21,7 +21,7 @@ SingleTicket *db::create_simple_ticket(const char meta, string info) {
   }
 }
 
-db::SingleDB db::load_single(const char *file) {
+database::SingleDB database::load_single(const char *file) {
   auto database = new Store<SingleTicket>();
   string line;
 
@@ -36,7 +36,7 @@ db::SingleDB db::load_single(const char *file) {
   return database;
 }
 
-db::MultiDB db::load_multi(const char *file, SingleDB database) {
+database::MultiDB database::load_multi(const char *file, SingleDB database) {
   string line;
 
   auto multi_db = new Store<MultiTicket>();
@@ -45,14 +45,14 @@ db::MultiDB db::load_multi(const char *file, SingleDB database) {
   source.open(file);
   while (!source.eof()) {
     source >> line;
-    *multi_db += MultiTicket::deserialize(line.substr(2), database);
+    *multi_db += MultiTicket::parse(line.substr(2), database);
   }
   source.close();
 
   return multi_db;
 }
 
-db::BaseDB db::load_relations(const char *file_path, SingleDB single,
+database::BaseDB database::load_relations(const char *file_path, SingleDB single,
                               MultiDB multi) {
   string field;
   IDType relation_id;
@@ -77,11 +77,13 @@ db::BaseDB db::load_relations(const char *file_path, SingleDB single,
 
   return related_database;
 }
-void db::save_relations(const char *file_path, db::BaseDB database) {
+
+void database::save_relations(const char *file_path,
+                              database::BaseDB database) {
   string line;
 
   ofstream target;
   target.open(file_path, ios::trunc);
-  target << database->serialize_keys();
+  target << database->serializeKeys();
   target.close();
 }

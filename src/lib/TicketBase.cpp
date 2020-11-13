@@ -17,10 +17,16 @@ float TicketBase::getCost() const { return this->cost; }
 
 void TicketBase::setCost(float new_cost) { this->cost = new_cost; }
 
-string TicketBase::getPrintableCost(string &CURRENCY) const {
-  const std::string PRINTABLE_COST = std::to_string(this->cost);
-  return CURRENCY + " " + PRINTABLE_COST;
+string TicketBase::toString() { return ", for $" + to_string(cost); }
+
+string TicketBase::stringify() {
+  return to_string(this->id) + ";" + to_string(this->cost) + ";";
 }
-string TicketBase::toString() {
-  return ", for $" + to_string(cost);
+string TicketBase::getField(string &fields) {
+  auto position = new size_t;
+  *position = fields.find(';');
+  string field = fields.substr(0, *position);
+  fields = fields.substr(++(*position));
+  delete position;
+  return field;
 }

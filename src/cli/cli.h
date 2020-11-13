@@ -8,7 +8,7 @@
 #include "../lib/PlaneTicket.h"
 #include "../lib/TicketBase.h"
 #include "../store/Store.h"
-#include "../utils/db.h"
+#include "../store/utils.h"
 #include <cstdio>
 #include <cstring>
 #include <fstream>
@@ -26,15 +26,20 @@ template <typename T> T prompt(string message) {
   return foo;
 }
 
-inline bool argcmp(int argc, char **argv, int pos, const char *pattern);
-
 void print_help();
-void list_all(db::SingleDB single, db::MultiDB multi, db::BaseDB reserved);
-void add_reservation(db::SingleDB single, db::MultiDB multi,
-                     db::BaseDB reserved);
-void remove_reservation(db::SingleDB single, db::MultiDB multi,
-                        db::BaseDB reserved);
-void action(db::SingleDB single, db::MultiDB multi, db::BaseDB reserved);
+
+void list(database::SingleDB single, database::MultiDB multi,
+          database::BaseDB reserved);
+
+void add(database::SingleDB single, database::MultiDB multi,
+         database::BaseDB reserved);
+
+void remove(database::SingleDB single, database::MultiDB multi,
+            database::BaseDB reserved);
+
+void action(database::SingleDB single, database::MultiDB multi,
+            database::BaseDB reserved);
+
 void hello();
 } // namespace cli
 

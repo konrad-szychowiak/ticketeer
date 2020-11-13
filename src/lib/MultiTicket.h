@@ -6,7 +6,7 @@
 #define NATIONALCPP_MULTITICKET_H
 
 #include "../store/Store.h"
-#include "../utils/types.h"
+#include "../types/types.h"
 #include "SingleTicket.h"
 #include "TicketBase.h"
 #include <iostream>
@@ -25,18 +25,17 @@ public:
   MultiTicket() = default;
 
   // reservation handling
-  void addReservation(TicketBase *ticket_link);
+  void add(TicketBase *ticket_link);
   void removeById(IDType target_id);
 
-  // FIXME operators
+  // operators
   MultiTicket *operator+=(TicketBase *other);
   MultiTicket *operator-=(TicketBase *other);
 
-  // serialisation
+  // serialization
   string toString() override;
-  string serialize() override;
-
-  static MultiTicket *deserialize(string data, Store<SingleTicket> *database);
+  string stringify() override;
+  static MultiTicket *parse(string data, Store<SingleTicket> *database);
 };
 
 #endif // NATIONALCPP_MULTITICKET_H

@@ -16,7 +16,7 @@ string MultiTicket::toString() {
   return text.substr(0, text.length() - 1);
 }
 
-void MultiTicket::addReservation(TicketBase *ticket_link) {
+void MultiTicket::add(TicketBase *ticket_link) {
   this->reservations.insert(
       std::pair<IDType, TicketBase *>(ticket_link->getId(), ticket_link));
   this->setCost(this->getCost() + ticket_link->getCost());
@@ -27,7 +27,7 @@ void MultiTicket::removeById(IDType target_id) {
 }
 
 MultiTicket *MultiTicket::operator+=(TicketBase *other) {
-  this->addReservation(other);
+  this->add(other);
   return this;
 }
 
@@ -36,29 +36,25 @@ MultiTicket *MultiTicket::operator-=(TicketBase *other) {
   return this;
 }
 
-string MultiTicket::serialize() {
-  string data = "m;" + super::serialize();
+string MultiTicket::stringify() {
+  string data = "m;" + super::stringify();
   for (auto const &pair : this->reservations) {
     auto key = pair.first;
     data += to_string(key) + ";";
   }
-  return data + '\n';
+  return data;
 }
-MultiTicket *MultiTicket::deserialize(string data,
-                                      Store<SingleTicket> *database) {
-  IDType id = stoi(data.substr(0, data.find(';')));
-  data = data.substr(data.find(';') + 1);
 
-  Cost cost = stof(data.substr(0, data.find(';')));
-  data = data.substr(data.find(';') + 1);
+MultiTicket *MultiTicket::parse(string data, Store<SingleTicket> *database) {
+  IDType id = stoi(super::getField(data));
+  Cost cost = stof(super::getField(data));
 
   auto ticket = new MultiTicket(id, cost);
 
   while (data.length() > 0) {
-    IDType link_id = stoi(data.substr(0, data.find(';')));
-    data = data.substr(data.find(';') + 1);
+    IDType link_id = stoi(super::getField(data));
     TicketBase *link_ticket = database->at(link_id);
-    ticket->addReservation(link_ticket);
+    *ticket += (link_ticket);
   }
 
   return ticket;
