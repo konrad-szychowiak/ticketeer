@@ -4,6 +4,10 @@
 
 #define DATABASES single, multi, reserved
 
+#define AVAILABLE_STR "AVAILABLE"
+#define RESERVED_STR "RESERVED"
+#define ID_PROMPT "\n    ? choose one ticket to make reservation. Ticket id:"
+
 #include "cli.h"
 #include "globals.h"
 
@@ -71,27 +75,24 @@ void cli::action(database::SingleDB single, database::MultiDB multi,
 
 void cli::list(database::SingleDB single, database::MultiDB multi,
                database::BaseDB reserved) {
-  printf("\x1b[1m\x1b[1;33m%5s\x1b[0;1m %s\x1b[0m\n", "id", "AVAILABLE");
+  listing_header(AVAILABLE_STR);
   single->listAll();
   multi->listAll();
 
   cout << "-----\n";
 
-  printf("\x1b[1m\x1b[1;33m%5s\x1b[0;1m %s\x1b[0m\n", "id", "RESERVED");
+  listing_header(RESERVED_STR);
   reserved->listAll();
 }
 
 void cli::add(database::SingleDB single, database::MultiDB multi,
               database::BaseDB reserved) {
 
-  cout << "\n\x1b[34m info\x1b[0m from:\n";
-  printf("\x1b[1m\x1b[1;33m%5s\x1b[0;1m %s\x1b[0m\n", "id", "AVAILABLE");
-
+  listing_header(AVAILABLE_STR);
   single->listAll();
   multi->listAll();
 
-  auto target_id = prompt<IDType>(
-      "\n    ? choose one ticket to make reservation. Ticket id:");
+  auto target_id = prompt<IDType>(ID_PROMPT);
 
   if (single->has(target_id))
     *reserved += single->at(target_id);
@@ -101,33 +102,38 @@ void cli::add(database::SingleDB single, database::MultiDB multi,
 
   else {
     cerr << "There is no ticket with id " << target_id
-         << " available for reservation!\n";
-    exit(0);
+         << " available for reservation! Nothing changed.\n";
   }
 
-  cout << "\n\x1b[34m info\x1b[0m now you have following reservations:\n";
-  printf("\x1b[1m\x1b[1;33m%5s\x1b[0;1m %s\x1b[0m\n", "id", "RESERVED");
+  info("now you have following reservations:");
+  listing_header("RESERVED");
   reserved->listAll();
 }
 
 void cli::remove(database::SingleDB single, database::MultiDB multi,
                  database::BaseDB reserved) {
-  cout << "\n\x1b[34m info\x1b[0m from:\n";
-  printf("\x1b[1m\x1b[1;33m%5s\x1b[0;1m %s\x1b[0m\n", "id", "RESERVED");
+
+  listing_header(AVAILABLE_STR);
   reserved->listAll();
 
-  auto target_id = prompt<IDType>(
-      "\n    ? choose one reservation to cancel. Reservation id:");
+  auto target_id = prompt<IDType>(ID_PROMPT);
 
   if (reserved->has(target_id))
     reserved->removeById(target_id);
 
   else {
-    cerr << "There is no ticket with id " << target_id << " in reservations!\n";
-    exit(0);
+    cerr << "There is no ticket with id " << target_id
+         << " in reservations! Nothing changed.\n";
   }
 
-  cout << "\n\x1b[34m info\x1b[0m now you have following reservations:\n";
-  printf("\x1b[1m\x1b[1;33m%5s\x1b[0;1m %s\x1b[0m\n", "id", "RESERVED");
+  info("now you have following reservations:");
+  listing_header(RESERVED_STR);
   reserved->listAll();
 }
+
+void cli::listing_header(const string &description) {
+  printf("\x1b[1m\x1b[1;33m%5s\x1b[0;1m %s\x1b[0m\n", "id",
+         description.c_str());
+}
+
+void cli::info(string msg) { cout << "\n\x1b[34m info\x1b[0m " << msg << endl; }

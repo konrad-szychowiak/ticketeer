@@ -27,6 +27,9 @@ template <typename T> T prompt(string message) {
   return foo;
 }
 
+void info(string msg);
+void listing_header(const string &description);
+
 void print_help();
 
 void list(database::SingleDB single, database::MultiDB multi,
