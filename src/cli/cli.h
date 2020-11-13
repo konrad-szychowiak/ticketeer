@@ -9,6 +9,7 @@
 #include "../lib/TicketBase.h"
 #include "../store/Store.h"
 #include "../store/utils.h"
+#include "globals.h"
 #include <cstdio>
 #include <cstring>
 #include <fstream>

@@ -5,21 +5,19 @@
 #define DATABASES single, multi, reserved
 
 #include "cli.h"
+#include "globals.h"
+
 void cli::print_help() {
   cout << "\x1b[37m"
        << "help:" << endl
        << "+\treserve new ticket" << endl
        << "-\tcancel reservation" << endl
        << "l\tlist reservations" << endl
+       << "x\texit" << endl
        << "\x1b[0m";
 }
 
 void cli::hello() {
-
-  const char *AVAILABLE_SIN = "../database/single.csv";
-  const char *AVAILABLE_MUL = "../database/multi.csv";
-  const char *RESERVED = "../database/reserved.csv";
-
   auto single_tickets = new Store<SingleTicket>();
   auto multi_tickets = new Store<MultiTicket>();
   auto reserved_tickets = new Store<TicketBase>();
@@ -31,8 +29,10 @@ void cli::hello() {
     reserved_tickets =
         database::load_relations(RESERVED, single_tickets, multi_tickets);
 
-    print_help();
-    action(single_tickets, multi_tickets, reserved_tickets);
+    while (true) {
+      print_help();
+      action(single_tickets, multi_tickets, reserved_tickets);
+    }
 
     database::save_relations(RESERVED, reserved_tickets);
   } catch (StoreInternalError &e) {
@@ -47,22 +47,25 @@ void cli::hello() {
 void cli::action(database::SingleDB single, database::MultiDB multi,
                  database::BaseDB reserved) {
 
-  switch (prompt<char>("? What to do [+/-/l]")) {
+  switch (prompt<char>("? What to do [+/-/l/x]")) {
   case '+':
     add(DATABASES);
-    return;
+    break;
 
   case '-':
     remove(DATABASES);
-    return;
+    break;
 
   case 'l':
     list(DATABASES);
-    return;
+    break;
+
+  case 'x':
+    database::save_relations(RESERVED, reserved);
+    exit(0);
 
   default:
     cerr << "Wrong action. Try again. Terminated.";
-    return;
   }
 }
 
