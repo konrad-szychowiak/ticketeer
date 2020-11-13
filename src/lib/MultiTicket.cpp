@@ -35,6 +35,7 @@ MultiTicket *MultiTicket::operator-=(TicketBase *other) {
   this->removeById(other->getId());
   return this;
 }
+
 string MultiTicket::serialize() {
   string data = "m;" + super::serialize();
   for (auto const &pair : this->reservations) {
@@ -44,7 +45,7 @@ string MultiTicket::serialize() {
   return data + '\n';
 }
 MultiTicket *MultiTicket::deserialize(string data,
-                                      DataBase<SingleTicket> *database) {
+                                      Store<SingleTicket> *database) {
   IDType id = stoi(data.substr(0, data.find(';')));
   data = data.substr(data.find(';') + 1);
 

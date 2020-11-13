@@ -5,44 +5,44 @@
 #ifndef NATIONALCPP_DATABASE_H
 #define NATIONALCPP_DATABASE_H
 
-#include "../utils/DBInternalError.h"
 #include "../utils/types.h"
+#include "StoreInternalError.h"
 #include <iostream>
 #include <map>
 
 using namespace std;
 
-template <class StoredTicket> class DataBase {
-  typedef map<IDType, StoredTicket *> Store;
-  typedef pair<IDType, StoredTicket *> StoredPair;
-  typedef pair<typename Store::iterator, bool> InsertionController;
+template <class T> class Store {
+  typedef map<IDType, T *> StoreMap;
+  typedef pair<IDType, T *> StoredPair;
+  typedef pair<typename StoreMap::iterator, bool> InsertionController;
 
-  Store store;
+  StoreMap store;
 
-  bool insert(StoredTicket *ticket) {
+  bool insert(T *ticket) {
     InsertionController controller;
     controller = this->store.insert(StoredPair(ticket->getId(), ticket));
     return controller.second;
   }
 
 public:
-  DataBase() = default;
+  Store() = default;
 
-  DataBase *add(StoredTicket *ticket) {
+  Store *add(T *ticket) {
     InsertionController controller;
-
     this->insert(ticket);
-
     return this;
   }
 
-  DataBase *removeById(IDType id) {
+  Store *removeById(IDType id) {
     this->store.erase(id);
     return this;
   }
 
-  StoredTicket *at(IDType key) { return this->store[key]; }
-  StoredTicket *operator[](IDType key) { return this->store[key]; }
+  T *at(IDType key) { return this->store[key]; }
+  T *operator[](IDType key) { return this->store[key]; }
+  Store<T> *operator+=(T *ticket) { this->add(ticket); return this; }
+  Store<T> *operator-=(T *ticket) { this->removeById(ticket->getId()); return this; }
 
   void listAll();
 
@@ -71,7 +71,7 @@ public:
   }
 };
 
-template <class StoredTicket> void DataBase<StoredTicket>::listAll() {
+template <class StoredTicket> void Store<StoredTicket>::listAll() {
   for (auto &pair : this->store) {
     auto key = pair.first;
     printf("\x1b[33m%5u\x1b[0m ", key);

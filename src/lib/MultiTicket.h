@@ -5,10 +5,10 @@
 #ifndef NATIONALCPP_MULTITICKET_H
 #define NATIONALCPP_MULTITICKET_H
 
+#include "../store/Store.h"
 #include "../utils/types.h"
 #include "SingleTicket.h"
 #include "TicketBase.h"
-#include "DataBase.h"
 #include <iostream>
 #include <map>
 #include <string>
@@ -36,7 +36,7 @@ public:
   string toString() override;
   string serialize() override;
 
-  static MultiTicket *deserialize(string data, DataBase<SingleTicket> *database);
+  static MultiTicket *deserialize(string data, Store<SingleTicket> *database);
 };
 
 #endif // NATIONALCPP_MULTITICKET_H

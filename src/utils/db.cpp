@@ -22,7 +22,7 @@ SingleTicket *db::create_simple_ticket(const char meta, string info) {
 }
 
 db::SingleDB db::load_single(const char *file) {
-  auto database = new DataBase<SingleTicket>();
+  auto database = new Store<SingleTicket>();
   string line;
 
   ifstream singles;
@@ -39,13 +39,13 @@ db::SingleDB db::load_single(const char *file) {
 db::MultiDB db::load_multi(const char *file, SingleDB database) {
   string line;
 
-  auto multi_db = new DataBase<MultiTicket>();
+  auto multi_db = new Store<MultiTicket>();
 
   ifstream source;
   source.open(file);
   while (!source.eof()) {
     source >> line;
-    multi_db->add(MultiTicket::deserialize(line.substr(2), database));
+    *multi_db += MultiTicket::deserialize(line.substr(2), database);
   }
   source.close();
 
@@ -58,17 +58,20 @@ db::BaseDB db::load_relations(const char *file_path, SingleDB single,
   IDType relation_id;
   ifstream file_content;
 
-  auto related_database = new DataBase<TicketBase>();
+  auto related_database = new Store<TicketBase>();
 
   file_content.open(file_path);
   while (std::getline(file_content, field, ';')) {
     relation_id = stoi(field);
+
     if (single->has(relation_id))
-      related_database->add(single->at(relation_id));
+      *related_database += single->at(relation_id);
+
     else if (multi->has(relation_id))
-      related_database->add(multi->at(relation_id));
+      *related_database += multi->at(relation_id);
+
     else
-      throw "Not in database";
+      throw StoreInternalError("Not in store");
   }
   file_content.close();
 

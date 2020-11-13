@@ -5,16 +5,16 @@
 #ifndef TICKETEER_DB_H
 #define TICKETEER_DB_H
 
-#include "../lib/DataBase.h"
 #include "../lib/MultiTicket.h"
 #include "../lib/NavalTicket.h"
 #include "../lib/PlaneTicket.h"
 #include "../lib/TicketBase.h"
+#include "../store/Store.h"
 
 namespace db {
-typedef DataBase<SingleTicket> *SingleDB;
-typedef DataBase<MultiTicket> *MultiDB;
-typedef DataBase<TicketBase> *BaseDB;
+typedef Store<SingleTicket> *SingleDB;
+typedef Store<MultiTicket> *MultiDB;
+typedef Store<TicketBase> *BaseDB;
 
 SingleTicket *create_simple_ticket(char meta, string info);
 SingleTicket *deserialize_simple(string line);

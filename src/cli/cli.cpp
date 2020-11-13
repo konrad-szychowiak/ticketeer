@@ -17,9 +17,9 @@ void cli::hello() {
   const char *AVAILABLE_MUL = "../database/multi.csv";
   const char *RESERVED = "../database/reserved.csv";
 
-  auto single_tickets = new DataBase<SingleTicket>();
-  auto multi_tickets = new DataBase<MultiTicket>();
-  auto reserved_tickets = new DataBase<TicketBase>();
+  auto single_tickets = new Store<SingleTicket>();
+  auto multi_tickets = new Store<MultiTicket>();
+  auto reserved_tickets = new Store<TicketBase>();
 
   single_tickets = db::load_single(AVAILABLE_SIN);
   multi_tickets = db::load_multi(AVAILABLE_MUL, single_tickets);

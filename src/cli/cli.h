@@ -4,10 +4,10 @@
 
 #ifndef NATIONALCPP_CLI_H
 #define NATIONALCPP_CLI_H
-#include "../lib/DataBase.h"
 #include "../lib/NavalTicket.h"
 #include "../lib/PlaneTicket.h"
 #include "../lib/TicketBase.h"
+#include "../store/Store.h"
 #include "../utils/db.h"
 #include <cstdio>
 #include <cstring>
