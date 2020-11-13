@@ -12,13 +12,11 @@ private:
   typedef SingleTicket super;
 
 public:
-  NavalTicket(std::string from, std::string to, float cost, int id)
-      : super(id, cost, std::move(from), std::move(to)) {}
+  static const char meta = 'n';
 
-  string toString() {
-    return "Cruise from `" + this->getFrom() + "' to `" + this->getTo() + "' " +
-           super::toString();
-  }
+  NavalTicket(IDType id, Cost cost, std::string from, std::string to);
+
+  string toString() override;
 };
 
 #endif // NATIONALCPP_NAVALTICKET_H

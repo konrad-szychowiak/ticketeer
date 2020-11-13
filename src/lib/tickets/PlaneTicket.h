@@ -12,17 +12,18 @@
 using namespace std;
 
 class PlaneTicket : public SingleTicket {
-private:
   typedef SingleTicket super;
 
 public:
-  PlaneTicket(std::string from, std::string to, float cost, int id)
-      : super(id, cost, std::move(from), std::move(to)) {}
+  /**
+   * p for *P*laneTicket
+   * for csv serialisation
+   */
+  static const char meta = 'p';
 
-  string toString() override {
-    return "Flight from `" + this->getFrom() + "' to `" + this->getTo() + "' " +
-           super::toString();
-  }
+  PlaneTicket(IDType id, Cost cost, std::string from, std::string to);
+
+  string toString() override;
 };
 
 #endif // NATIONALCPP_PLANETICKET_H

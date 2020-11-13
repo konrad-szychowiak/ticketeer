@@ -5,6 +5,7 @@
 #ifndef NATIONALCPP_SINGLETICKET_H
 #define NATIONALCPP_SINGLETICKET_H
 
+#include <iostream>
 #include <string>
 #include <utility>
 
@@ -32,6 +33,19 @@ public:
   void setTo(std::string value) { this->to = std::move(value); }
 
   string toString() override { return super::toString(); }
+
+  static TicketBase *deserialise(string &info) {
+    IDType id;
+    Cost cost;
+    string from, to;
+
+    for (int i = 0, next = 0; i < 4; i++) {
+      next += info.find(';');
+      cout << info.substr(0, next);
+    }
+
+    return nullptr;
+  }
 };
 
 #endif // NATIONALCPP_SINGLETICKET_H
